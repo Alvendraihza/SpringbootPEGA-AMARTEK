@@ -4,6 +4,8 @@ import com.amartek.restful_demo.service.BukuService;
 
 import java.util.List;
 
+// import javax.persistence.Id;
+
 import com.amartek.restful_demo.entity.Buku;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,39 +21,42 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/buku")
 public class BukuController {
     private final BukuService bukuServices;
-
-    //Constructor
     public BukuController(BukuService bukuServices) {
         this.bukuServices = bukuServices;
     }
 
     @GetMapping("/gets")
-    public List<Buku> getsBuku() {
+    public List<Buku> getAllBuku() {
         return bukuServices.getAll();
     }
-    
-    @GetMapping("/get/{judul}")
-    public List<Buku> getBukuById(@PathVariable final String judul) {
-        return bukuServices.getBukuByJudul(judul);
+
+    @GetMapping("/getsid/{id}")
+    public Buku getBukuById(@PathVariable final Long id){
+        return bukuServices.getBukuById(id);
+    }
+    @GetMapping("/getsjudul/{judul}")
+    public List<Buku> getBukuByJUDUL(@PathVariable final String judul){
+        return bukuServices.getBukuByJUDUL(judul);
     }
 
-    @GetMapping("/get_by_penerbit/{penerbit}")
-    public List<Buku> getBukuByPenerbit(@PathVariable final String penerbit) {
-        return bukuServices.getBukuByPenerbit(penerbit);
+    @GetMapping("/getspenerbit/{penerbit}")
+    public List<Buku> getBukuByPENERBIT(@PathVariable final String penerbit){
+        return bukuServices.getBukuByPENERBIT(penerbit);
     }
 
     @PostMapping("/create")
-    public void createBuku(@RequestBody final Buku buku) {
-        bukuServices.createBuku(buku);
+	public Buku create(@RequestBody final Buku buku) {
+		return bukuServices.createBuku(buku);
+	}
+
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable final Long id){
+        bukuServices.deleteBuku(id);
     }
 
-    @DeleteMapping("/delete/{IdBuku}")
-    public void deleteBuku(@PathVariable final Long IdBuku) {
-        bukuServices.deleteBuku(IdBuku);
+    @PutMapping("/edit/{id}")
+    public Buku edit(@RequestBody final Buku buku, @PathVariable final Long id){
+    	return bukuServices.editPost(buku, id);
     }
 
-    @PutMapping("/edit/{IdBuku}")
-    public void deleteBuku(@PathVariable final Long IdBuku, @RequestBody final Buku buku) {
-        bukuServices.editBuku(IdBuku, buku);
-    }
 }

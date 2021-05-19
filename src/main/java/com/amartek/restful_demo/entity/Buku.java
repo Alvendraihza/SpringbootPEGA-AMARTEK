@@ -1,6 +1,7 @@
 package com.amartek.restful_demo.entity;
 
 import java.sql.Date;
+// import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +13,8 @@ import javax.persistence.SequenceGenerator;
 @Entity
 public class Buku {
     @Id
-    @SequenceGenerator(name = "BUKU_SEQ", allocationSize = 1)                      //Set Increment generator to +1
-    @GeneratedValue(generator = "BUKU_SEQ", strategy = GenerationType.SEQUENCE)    //Set column as auto_increment
+    @SequenceGenerator(name = "BUKU_SEQ", allocationSize = 1)                     
+    @GeneratedValue(generator = "BUKU_SEQ", strategy = GenerationType.SEQUENCE)    
     private Long ID;
 
     @Column(nullable = false)
@@ -88,5 +89,6 @@ public class Buku {
     public void setUSERID(Long USERID) {
         this.USERID = USERID;
     }
+
 
 }

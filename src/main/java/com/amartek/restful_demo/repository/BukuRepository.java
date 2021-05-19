@@ -10,9 +10,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BukuRepository extends JpaRepository<Buku, Long> {
-    List<Buku> findByJUDULContainsIgnoreCase(String judul);
+
+    List<Buku> findByJUDULContainsIgnoreCase(String JUDUL);
 
     List<Buku> findByPENERBITContainsIgnoreCase(String penerbit);
 
-    Optional<Buku> findByISBN(String ISBN);
+    Optional<Buku> findByJUDUL(String judul);
+
+    
+    
 }

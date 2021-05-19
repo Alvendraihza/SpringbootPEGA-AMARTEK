@@ -20,46 +20,55 @@ public class BukuService {
         return bukuRepository.findAll();
     }
 
-    public List<Buku> getBukuByJudul(String judul) {
+    public Buku getBukuById(Long id) {
+        return bukuRepository.findById(id).get();
+    }
+
+    public List<Buku> getBukuByJUDUL(String judul) {
         return bukuRepository.findByJUDULContainsIgnoreCase(judul);
     }
 
-    public List<Buku> getBukuByPenerbit(String penerbit) {
+    public List<Buku> getBukuByPENERBIT(String penerbit) {
         return bukuRepository.findByPENERBITContainsIgnoreCase(penerbit);
     }
 
-    public void createBuku(Buku buku) {
-        Optional<Buku> bukuOptional = bukuRepository.findByISBN(buku.getISBN());
-
-        if (bukuOptional.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "A book with same ISBN number is present!");
-        }
-        else {
-            bukuRepository.save(buku);
-            throw new ResponseStatusException(HttpStatus.OK, "Book data successfully saved!");
-        }
+    public Buku createBuku(Buku buku) {
+        Optional<Buku> bukuOptional = bukuRepository.findByJUDUL(buku.getJUDUL());
+		
+		if (bukuOptional.isPresent()) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "JUDUL SAMA");
+		}
+		else {
+	        bukuRepository.save(buku);
+	        throw new ResponseStatusException(HttpStatus.OK, "Buku berhasil ditambahkan!");
+		}
     }
 
     public void deleteBuku(Long IdBuku) {
         Optional<Buku> bukuOptional = bukuRepository.findById(IdBuku);
-
-        if(bukuOptional.isPresent()) {
+		
+		if (bukuOptional.isPresent()) {
             bukuRepository.deleteById(IdBuku);
-            throw new ResponseStatusException(HttpStatus.OK, "Book has successfully been Deleted!");
-        }
-        else
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book is not available!");
+			throw new ResponseStatusException(HttpStatus.OK, "Berhasil dihapus");
+		}
+		else {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID tidak ada");
+		}
     }
 
-    public void editBuku(Long IdBuku, Buku buku) {
-        Optional<Buku> bukuOptional = bukuRepository.findById(IdBuku);
-
-        if(bukuOptional.isPresent()) {
-            bukuRepository.save(buku);
-            throw new ResponseStatusException(HttpStatus.OK, "Book has successfully been Updated!");
-        }
-        else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Book is not available!");
-        }
+    public Buku editPost(Buku buku, Long id) {
+        Optional<Buku> postOptional = bukuRepository.findById(id);
+		
+		if (postOptional.isPresent()) {
+			bukuRepository.save(buku);
+			throw new ResponseStatusException(
+				HttpStatus.OK, "Sukses Edit Buku"
+			);
+		}
+		else {
+			throw new ResponseStatusException(
+				HttpStatus.NOT_FOUND, "Post [id=" + buku.getID() + "] tidak ditemukan");
+		}
     }
+    
 }

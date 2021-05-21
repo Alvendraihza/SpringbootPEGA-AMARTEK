@@ -11,8 +11,8 @@ import javax.persistence.SequenceGenerator;
 @Entity
 public class Pelanggan {
     @Id
-    @SequenceGenerator(name = "PELANGGAN_SEQ", allocationSize = 1)                     
-    @GeneratedValue(generator = "PELANGGAN_SEQ", strategy = GenerationType.SEQUENCE)    
+    @SequenceGenerator(name = "PELANGGAN_SEQ", allocationSize = 1)                   //Set Increment selalu +1  
+    @GeneratedValue(generator = "PELANGGAN_SEQ", strategy = GenerationType.SEQUENCE) //Set Column sebagai Auto_Increment   
     private Long ID;
 
     @Column(nullable = false)

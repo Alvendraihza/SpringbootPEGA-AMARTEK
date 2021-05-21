@@ -24,18 +24,52 @@ public class PelangganService {
         return pelangganRepository.findById(id).get();
     }
 
-    public List<Pelanggan> getPelangganByKODEPEL(String kodepel) {
-        return pelangganRepository.findByKODEPELContainsIgnoreCase(kodepel);
+    //Add isEmpty Throw error apabila pencarian Kode pelanggan tidak ditemukan
+    public List<Pelanggan> getPelangganByKODEPEL(String kodepelanggan) {
+        if(pelangganRepository.findByKODEPELContainsIgnoreCase(kodepelanggan).isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "KODE PELANGGAN TIDAK DAPAT DITEMUKAN !");
+        }  
+            return pelangganRepository.findByKODEPELContainsIgnoreCase(kodepelanggan);
     }
 
+    //Add isEmpty Throw error apabila pencarian Nama pelanggan tidak ditemukan
     public List<Pelanggan> getPelangganByNAMA(String nama) {
-        return pelangganRepository.findByNAMAContainsIgnoreCase(nama);
+        if(pelangganRepository.findByNAMAContainsIgnoreCase(nama).isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "NAMA PELANGGAN TIDAK DAPAT DITEMUKAN !");
+        }
+            return pelangganRepository.findByNAMAContainsIgnoreCase(nama);
+    
     }
 
+    //Add isEmpty Throw error apabila pencarian Alamat pelanggan tidak ditemukan
+    public List<Pelanggan> getPelangganByALAMAT(String alamat) {
+        if(pelangganRepository.findByALAMATContainsIgnoreCase(alamat).isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ALAMAT PELANGGAN TIDAK DAPAT DITEMUKAN !");
+        }  
+            return pelangganRepository.findByALAMATContainsIgnoreCase(alamat);
+    }
+
+    //Add isEmpty Throw error apabila pencarian Telepon pelanggan tidak ditemukan
+    public List<Pelanggan> getPelangganByTELP(String telepon) {
+        if(pelangganRepository.findByTELP(telepon).isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "TELEPON PELANGGAN TIDAK DAPAT DITEMUKAN !");
+        }  
+            return pelangganRepository.findByTELP(telepon);
+    }
+
+    //Add isEmpty Throw error apabila pencarian Email pelanggan tidak ditemukan
+    public List<Pelanggan> getPelangganByEMAIL(String email) {
+        if(pelangganRepository.findByEMAILContainsIgnoreCase(email).isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "EMAIL PELANGGAN TIDAK DAPAT DITEMUKAN !");
+        }  
+            return pelangganRepository.findByEMAILContainsIgnoreCase(email);
+    }
+
+    //CONFLICT apabila ditemukan kesamaan pada data pelanggan berdasarkan Kode Pelanggan
     public Pelanggan createPelanggan(Pelanggan pelanggan) {
         Optional<Pelanggan> pelangganOptional = pelangganRepository.findByKODEPEL(pelanggan.getKODEPEL());
         if (pelangganOptional.isPresent()) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "TELAH DI TEMUKAN KESAMAAN DATA PELANGGAN !");
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "TELAH DI TEMUKAN KESAMAAN DATA KODE PELANGGAN !");
 		}
 		else {
 	        pelangganRepository.save(pelanggan);
@@ -54,7 +88,7 @@ public class PelangganService {
 		}
 		else {
 			throw new ResponseStatusException(
-				HttpStatus.NOT_FOUND, "DATA PELANGGAN DENGAN [ID=" + pelanggan.getID() + "] TIDAK DITEMUKAN !");
+				HttpStatus.NOT_FOUND, "DATA PELANGGAN DENGAN [ID=" + pelanggan.getID() + "] TIDAK DAPAT DITEMUKAN !");
 		}
     }
 
@@ -63,10 +97,10 @@ public class PelangganService {
 		
 		if (pelangganOptional.isPresent()) {
             pelangganRepository.deleteById(id);
-			throw new ResponseStatusException(HttpStatus.OK, "DATA BERHASIL DIHAPUS !");
+			throw new ResponseStatusException(HttpStatus.OK, "DATA TELAH BERHASIL DIHAPUS !");
 		}
 		else {
-	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID TIDAK DITEMUKAN !");
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ID TIDAK DAPAT DITEMUKAN !");
 		}
     }
 }
